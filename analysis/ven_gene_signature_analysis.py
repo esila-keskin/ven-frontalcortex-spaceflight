@@ -98,7 +98,7 @@ CAT_COLORS = {
 
 
 def load_de():
-    path = DATA / "FCT_DEanalysis.txt"
+    path = DATA / "GSE239336_FCT_GCvsFLT-SAL_DEanalysis.txt"
     df = pd.read_csv(path, sep="\t", skiprows=6)
     df.columns = ["tag", "group", "gene", "log2fc",
                   "pvalue", "adj_pvalue", "neg_log10_p", "neg_log10_adjp"]
@@ -112,7 +112,7 @@ def load_de():
 
 
 def load_expr():
-    path = DATA / "FCT_GeneExpression_Q3norm.txt"
+    path = DATA / "GSE239336_FCT_GeneExpression_Q3norm.txt"
     df = pd.read_csv(path, sep="\t", index_col=0)
     df.index = df.index.astype(str).str.strip()
     return df
@@ -335,11 +335,11 @@ def main():
     records = []
     for _, row in ven_de.iterrows():
         records.append({
-            "gene":        row.gene,
+            "gene": row.gene,
             "category":    row.category,
             "description": row.description,
-            "log2fc":      round(float(row.log2fc), 4),
-            "pvalue":      round(float(row.pvalue), 6),
+            "log2fc": round(float(row.log2fc), 4),
+            "pvalue": round(float(row.pvalue), 6),
             "adj_pvalue":  str(row.adj_pvalue),
             "significant": bool(row.pvalue < 0.05),
             "direction":   "up" if row.log2fc > 0 else "down",

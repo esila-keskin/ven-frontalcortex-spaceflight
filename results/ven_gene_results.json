@@ -1,0 +1,281 @@
+{
+  "enrichment": {
+    "enrichment_p": 0.12325392114138756,
+    "odds_ratio": 2.6216875871687586,
+    "n_ven_sig": 3,
+    "n_ven": 27,
+    "background_rate": 0.04562159422126473
+  },
+  "genes": [
+    {
+      "gene": "Cnp",
+      "category": "Myelination",
+      "description": "2,3-cyclic nucleotide phosphodiesterase",
+      "log2fc": 0.618,
+      "pvalue": 0.010956,
+      "adj_pvalue": "0.0",
+      "significant": true,
+      "direction": "up"
+    },
+    {
+      "gene": "Sod2",
+      "category": "Oxidative Stress",
+      "description": "Superoxide dismutase 2 - mitochondrial",
+      "log2fc": 0.4382,
+      "pvalue": 0.041337,
+      "adj_pvalue": "0.0",
+      "significant": true,
+      "direction": "up"
+    },
+    {
+      "gene": "Snap25",
+      "category": "Fast Signalling",
+      "description": "SNARE protein - fast vesicle fusion",
+      "log2fc": 0.4223,
+      "pvalue": 0.043844,
+      "adj_pvalue": "0.0",
+      "significant": true,
+      "direction": "up"
+    },
+    {
+      "gene": "Nos1",
+      "category": "VEN Identity",
+      "description": "nNOS  VEN biochemical marker",
+      "log2fc": -0.3544,
+      "pvalue": 0.086429,
+      "adj_pvalue": "0.08",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Mag",
+      "category": "Myelination",
+      "description": "Myelin-associated glycoprotein",
+      "log2fc": 0.5454,
+      "pvalue": 0.158232,
+      "adj_pvalue": "0.09",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Nox4",
+      "category": "Oxidative Stress",
+      "description": "NADPH oxidase - ROS generation",
+      "log2fc": 0.2702,
+      "pvalue": 0.172298,
+      "adj_pvalue": "0.07",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Mbp",
+      "category": "Myelination",
+      "description": "Myelin basic protein",
+      "log2fc": 0.5309,
+      "pvalue": 0.17359,
+      "adj_pvalue": "0.05",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Grin1",
+      "category": "Synaptic",
+      "description": "NMDA receptor subunit 1",
+      "log2fc": 0.3055,
+      "pvalue": 0.19845,
+      "adj_pvalue": "0.26",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Syt1",
+      "category": "Fast Signalling",
+      "description": "Synaptotagmin - fast synaptic release",
+      "log2fc": 0.2153,
+      "pvalue": 0.242484,
+      "adj_pvalue": "0.21",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Nefh",
+      "category": "Fast Signalling",
+      "description": "Heavy neurofilament - large axon calibre",
+      "log2fc": 0.3281,
+      "pvalue": 0.270877,
+      "adj_pvalue": "0.09",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Mog",
+      "category": "Myelination",
+      "description": "Myelin oligodendrocyte glycoprotein",
+      "log2fc": 0.2936,
+      "pvalue": 0.286908,
+      "adj_pvalue": "0.28",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Grin2a",
+      "category": "Synaptic",
+      "description": "NMDA receptor subunit 2A",
+      "log2fc": -0.2577,
+      "pvalue": 0.287628,
+      "adj_pvalue": "0.19",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Grin2b",
+      "category": "Synaptic",
+      "description": "NMDA receptor subunit 2B",
+      "log2fc": -0.4034,
+      "pvalue": 0.316225,
+      "adj_pvalue": "0.27",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Nefl",
+      "category": "Fast Signalling",
+      "description": "Light neurofilament - axon structure",
+      "log2fc": -0.2307,
+      "pvalue": 0.355731,
+      "adj_pvalue": "0.3",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Dlg4",
+      "category": "Synaptic",
+      "description": "PSD-95 - postsynaptic scaffold",
+      "log2fc": -0.2779,
+      "pvalue": 0.36476,
+      "adj_pvalue": "0.25",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Disc1",
+      "category": "VEN Identity",
+      "description": "VEN-associated (schizophrenia risk)",
+      "log2fc": 0.2606,
+      "pvalue": 0.390896,
+      "adj_pvalue": "0.51",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Sod1",
+      "category": "Oxidative Stress",
+      "description": "Superoxide dismutase 1 - antioxidant",
+      "log2fc": 0.1598,
+      "pvalue": 0.396246,
+      "adj_pvalue": "0.4",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Cat",
+      "category": "Oxidative Stress",
+      "description": "Catalase - H2O2 clearance",
+      "log2fc": 0.1696,
+      "pvalue": 0.425987,
+      "adj_pvalue": "0.35",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Vamp2",
+      "category": "Fast Signalling",
+      "description": "Vesicle-associated - fast transmission",
+      "log2fc": 0.1452,
+      "pvalue": 0.427899,
+      "adj_pvalue": "0.4",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Gadd45g",
+      "category": "VEN Identity",
+      "description": "VEN marker (stress response)",
+      "log2fc": 0.103,
+      "pvalue": 0.433879,
+      "adj_pvalue": "0.28",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Adra1a",
+      "category": "VEN Identity",
+      "description": "VEN marker (adrenergic receptor)",
+      "log2fc": -0.1299,
+      "pvalue": 0.456511,
+      "adj_pvalue": "0.26",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Nefm",
+      "category": "Fast Signalling",
+      "description": "Medium neurofilament - axon structure",
+      "log2fc": -0.4598,
+      "pvalue": 0.457256,
+      "adj_pvalue": "0.5",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Bcl11b",
+      "category": "VEN Identity",
+      "description": "Layer V projection neuron identity",
+      "log2fc": -0.137,
+      "pvalue": 0.48748,
+      "adj_pvalue": "0.37",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Gpx1",
+      "category": "Oxidative Stress",
+      "description": "Glutathione peroxidase",
+      "log2fc": -0.059,
+      "pvalue": 0.539054,
+      "adj_pvalue": "0.5",
+      "significant": false,
+      "direction": "down"
+    },
+    {
+      "gene": "Fxyd1",
+      "category": "VEN Identity",
+      "description": "VEN marker (ion transport)",
+      "log2fc": 0.127,
+      "pvalue": 0.658129,
+      "adj_pvalue": "0.62",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Plp1",
+      "category": "Myelination",
+      "description": "Proteolipid protein - myelin sheath",
+      "log2fc": 0.0644,
+      "pvalue": 0.719033,
+      "adj_pvalue": "0.66",
+      "significant": false,
+      "direction": "up"
+    },
+    {
+      "gene": "Shank3",
+      "category": "Synaptic",
+      "description": "Postsynaptic density protein",
+      "log2fc": -0.0377,
+      "pvalue": 0.790933,
+      "adj_pvalue": "0.79",
+      "significant": false,
+      "direction": "down"
+    }
+  ]
+}
