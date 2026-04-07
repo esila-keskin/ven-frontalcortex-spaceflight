@@ -30,7 +30,7 @@ We define a **VEN gene signature** from the literature and ask: are these genes 
 | **Cnp** | Myelination | +0.618 | 0.011* | ↑ spaceflight |
 | **Sod2** | Oxidative Stress | +0.438 | 0.041* | ↑ spaceflight |
 | **Snap25** | Fast Signalling | +0.422 | 0.044* | ↑ spaceflight |
-| Nos1 | VEN Identity | −0.354 | 0.086 | ↓ trending |
+| Nos1 | VEN Identity | -0.354 | 0.086 | ↓ trending |
 | Mag | Myelination | +0.545 | 0.158 | ↑ trending |
 | Mbp | Myelination | +0.531 | 0.174 | ↑ trending |
 
@@ -74,8 +74,8 @@ Curated from Allman et al. (2010), Stimpson et al. (2011), Hodge et al. (2020):
 ```
 ven-frontalcortex-spaceflight/
 ├── data/
-│   ├── FCT_DEanalysis.txt              ← DE results (GC vs spaceflight)
-│   └── FCT_GeneExpression_Q3norm.txt   ← Normalised expression matrix
+│   ├── FCT_DEanalysis.txt <- DE results (GC vs spaceflight)
+│   └── FCT_GeneExpression_Q3norm.txt   <- Normalised expression matrix
 ├── analysis/
 │   └── ven_gene_signature_analysis.py
 ├── figures/
