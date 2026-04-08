@@ -16,7 +16,8 @@ Outputs:
     figures/fig_ven_volcano.pdf - volcano plot with VEN genes highlighted
     figures/fig_ven_heatmap.pdf - VEN gene expression heatmap
     figures/fig_ven_significant.pdf - bar chart of significant VEN genes
-    results/ven_gene_results.json - full results table
+    figures/fig_ven_categories.pdf - category-level summary with statistics
+    results/ven_gene_results.json - full results table with category analysis
 """
 
 import json
@@ -83,11 +84,9 @@ VEN_GENES = {
     },
 }
 
-# Flat list for lookups
 ALL_VEN_GENES = {g: cat for cat, genes in VEN_GENES.items() for g in genes}
 GENE_DESC = {g: d for cat, genes in VEN_GENES.items() for g, d in genes.items()}
 
-# Category colours matching Fast Lane Hypothesis paper palette
 CAT_COLORS = {
     "VEN Identity":    "#E05252",
     "Fast Signalling": "#3A7FC1",
@@ -118,6 +117,47 @@ def load_expr():
     return df
 
 
+def category_level_analysis(ven_de):
+    """
+    Category-level statistical analysis using one-sample t-tests.
+    Tests whether each functional category shows coordinated expression change.
+    More powerful than individual gene tests with small sample sizes.
+    """
+    print("CATEGORY-LEVEL ANALYSIS (Primary Statistical Test)")
+    print(f"{'Category':<20} {'n':>3} {'Mean log2FC':>12} {'SEM':>8} {'t':>8} {'p-value':>10} {'Sig':>5}")
+    
+    results = []
+    for cat in VEN_GENES.keys():
+        sub = ven_de[ven_de.category == cat]
+        log2fcs = sub.log2fc.values
+        
+        # One-sample t-test: is mean log2FC significantly different from 0?
+        t_stat, p_val = stats.ttest_1samp(log2fcs, 0)
+        sem = stats.sem(log2fcs)
+        
+        sig_marker = "***" if p_val < 0.001 else "**" if p_val < 0.01 else "*" if p_val < 0.05 else "ns"
+        
+        print(f"{cat:<20} {len(log2fcs):>3} {log2fcs.mean():>12.3f} {sem:>8.3f} "
+              f"{t_stat:>8.3f} {p_val:>10.4f} {sig_marker:>5}")
+        
+        results.append({
+            "category": cat,
+            "n_genes": int(len(log2fcs)),
+            "mean_log2fc": float(log2fcs.mean()),
+            "sem": float(sem),
+            "t_statistic": float(t_stat),
+            "p_value": float(p_val),
+            "df": int(len(log2fcs) - 1),
+            "significant": bool(p_val < 0.05),
+            "direction": "up" if log2fcs.mean() > 0 else "down"
+        })
+    
+    print("Interpretation: One-sample t-tests vs. null hypothesis of no change (log2FC=0)")
+    print("* p<0.05, ** p<0.01, *** p<0.001")
+    
+    return results
+
+
 def run_analysis(de, expr):
     print("VEN GENE SIGNATURE - FRONTAL CORTEX SPACEFLIGHT (OSD-698)")
     print(f"\nTotal genes in dataset: {len(de)}")
@@ -136,10 +176,13 @@ def run_analysis(de, expr):
     print(f"\nVEN genes found in dataset: {len(ven_de)}/{len(ALL_VEN_GENES)}")
     print(f"VEN genes significant (p<0.05): {(ven_de.pvalue < 0.05).sum()}")
 
-    print("\n── VEN Gene Results (sorted by p-value) ──")
+    # CATEGORY-LEVEL ANALYSIS (PRIMARY)
+    cat_results = category_level_analysis(ven_de)
+
+    # INDIVIDUAL GENE ANALYSIS (SECONDARY/EXPLORATORY)
+    print("INDIVIDUAL GENE RESULTS (Secondary/Exploratory)")
     print(f"{'Gene':<12} {'Category':<18} {'Log2FC':>8} {'p-value':>10} "
           f"{'adj.p':>8} {'Direction':<12}")
-    print("-"*75)
     for _, row in ven_de.iterrows():
         direction = "↑ spaceflight" if row.log2fc > 0 else "↓ spaceflight"
         sig = "***" if row.pvalue < 0.001 else "**" if row.pvalue < 0.01 \
@@ -154,7 +197,8 @@ def run_analysis(de, expr):
     n_ven = len(ven_de)
     n_ven_sig = (ven_de.pvalue < 0.05).sum()
     expected = n_total_sig / n_total * n_ven
-    print(f"\n Enrichment Analysis ")
+    
+    print("ENRICHMENT ANALYSIS")
     print(f"Background sig rate: {n_total_sig}/{n_total} = "
           f"{n_total_sig/n_total*100:.1f}%")
     print(f"VEN gene sig rate:   {n_ven_sig}/{n_ven} = "
@@ -168,10 +212,16 @@ def run_analysis(de, expr):
                     n_total - n_total_sig - (n_ven - n_ven_sig)]]
     odds, p_fisher = stats.fisher_exact(contingency)
     print(f"Fisher exact: OR={odds:.2f}, p={p_fisher:.4f}")
+    print("="*80)
 
-    return ven_de, {"enrichment_p": p_fisher, "odds_ratio": odds,
-                    "n_ven_sig": int(n_ven_sig), "n_ven": int(n_ven),
-                    "background_rate": float(n_total_sig/n_total)}
+    return ven_de, {
+        "category_analysis": cat_results,
+        "enrichment_p": float(p_fisher), 
+        "odds_ratio": float(odds),
+        "n_ven_sig": int(n_ven_sig), 
+        "n_ven": int(n_ven),
+        "background_rate": float(n_total_sig/n_total)
+    }
 
 
 def plot_volcano(de, ven_de):
@@ -273,13 +323,16 @@ def plot_significant_bars(ven_de):
     print(f"Saved: {out}")
 
 
-def plot_category_summary(ven_de):
-    """Mean log2fc per category with individual gene points."""
+def plot_category_summary(ven_de, cat_results):
+    """Mean log2fc per category with individual gene points and significance markers."""
     fig, ax = plt.subplots(figsize=(9, 5))
 
     cats = list(VEN_GENES.keys())
     x = np.arange(len(cats))
     width = 0.5
+
+    # Create lookup for category p-values
+    cat_pvals = {r["category"]: r["p_value"] for r in cat_results}
 
     for i, cat in enumerate(cats):
         sub = ven_de[ven_de.category == cat]
@@ -300,6 +353,15 @@ def plot_category_summary(ven_de):
                         xy=(i, row.log2fc),
                         xytext=(5, 0), textcoords="offset points",
                         fontsize=8, fontweight="bold", color=color)
+        
+        # Add category-level significance marker
+        p_val = cat_pvals.get(cat, 1.0)
+        if p_val < 0.05:
+            sig_marker = "***" if p_val < 0.001 else "**" if p_val < 0.01 else "*"
+            # Position marker above the bar
+            y_pos = means + 0.05 if means > 0 else means - 0.05
+            ax.text(i, y_pos, sig_marker, ha="center", va="bottom" if means > 0 else "top",
+                    fontsize=16, fontweight="bold", color=color)
 
     ax.axhline(0, color="black", linewidth=0.8)
     ax.set_xticks(x)
@@ -307,7 +369,7 @@ def plot_category_summary(ven_de):
     ax.set_ylabel("Log₂ Fold Change (Spaceflight vs Ground)", fontsize=11)
     ax.set_title(
         "VEN Gene Categories - Mean Expression Change in Spaceflight\n"
-        "NASA OSD-698 Frontal Cortex | Bold labels = p<0.05",
+        "NASA OSD-698 Frontal Cortex | Gene labels = individual p<0.05 | */*** = category p<0.05/0.001",
         fontweight="bold", fontsize=11)
     ax.grid(axis="y", alpha=0.3)
     ax.spines[["top", "right"]].set_visible(False)
@@ -329,7 +391,7 @@ def main():
     print("\nGenerating figures...")
     plot_volcano(de, ven_de)
     plot_significant_bars(ven_de)
-    plot_category_summary(ven_de)
+    plot_category_summary(ven_de, stats_res["category_analysis"])
 
     # Save results JSON
     records = []
@@ -347,9 +409,25 @@ def main():
 
     out_json = RES / "ven_gene_results.json"
     with open(out_json, "w") as f:
-        json.dump({"enrichment": stats_res, "genes": records}, f, indent=2)
+        json.dump({
+            "category_analysis": stats_res["category_analysis"],
+            "enrichment": {
+                "enrichment_p": stats_res["enrichment_p"],
+                "odds_ratio": stats_res["odds_ratio"],
+                "n_ven_sig": stats_res["n_ven_sig"],
+                "n_ven": stats_res["n_ven"],
+                "background_rate": stats_res["background_rate"]
+            },
+            "genes": records
+        }, f, indent=2)
     print(f"Saved: {out_json}")
-    print("\nDone.")
+    print("ANALYSIS COMPLETE")
+    print("\nKEY FINDINGS:")
+    for cat_res in stats_res["category_analysis"]:
+        if cat_res["significant"]:
+            print(f"  ✓ {cat_res['category']}: mean log2FC = {cat_res['mean_log2fc']:.3f}, "
+                  f"t({cat_res['df']}) = {cat_res['t_statistic']:.2f}, p = {cat_res['p_value']:.4f}")
+    print("="*80)
 
 
 if __name__ == "__main__":
